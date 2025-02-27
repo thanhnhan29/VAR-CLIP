@@ -73,7 +73,7 @@ bs = len(tmp_text)
 texts = tokenize(tmp_text).to(device)    # (1, 77)
 text_embeddings = clip.encode_text(texts)  # [1, 768]
 embeds = text_embeddings.expand(bs, -1)
-
+print("check1")
 # seed
 torch.manual_seed(seed)
 random.seed(seed)
@@ -89,11 +89,12 @@ torch.set_float32_matmul_precision('high' if tf32 else 'highest')
 
 
 # sample
+print("check2")
 B = len(embeds)
 with torch.inference_mode():
     with torch.autocast('cuda', enabled=True, dtype=torch.float16, cache_enabled=True):    # using bfloat16 can be faster
         recon_B3HW = var.autoregressive_infer_cfg(B=B, label_B=embeds, cfg=cfg, top_k=900, top_p=0.95, g_seed=seed, more_smooth=more_smooth)
-
+print("check3")
 chw = torchvision.utils.make_grid(recon_B3HW, nrow=8, padding=0, pad_value=1.0)   
 chw = chw.permute(1, 2, 0).mul_(255).cpu().numpy()
 chw = PImage.fromarray(chw.astype(np.uint8))
