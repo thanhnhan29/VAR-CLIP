@@ -273,7 +273,7 @@ def clip_vit_b32(pretrained=True):
 
 def clip_vit_l14(pretrained=True):
     if pretrained:
-        clip, _, _, = open_clip.create_model_and_transforms('ViT-L-14', pretrained='pretrained/ViT-L-14.pt')
+        clip, _, _, = open_clip.create_model_and_transforms('ViT-L-14', pretrained='pretrained/ViT-L-14.pt',load_weights_only=False)
 
     return clip
 
